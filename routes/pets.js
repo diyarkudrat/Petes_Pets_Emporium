@@ -1,6 +1,9 @@
 // MODELS
 const Pet = require('../models/pet');
 
+// MAILER MODULE
+const mailer = require('../utils/mailer');
+
 // PET ROUTES
 module.exports = (app) => {
 
@@ -46,6 +49,7 @@ module.exports = (app) => {
       })
       .catch((err) => {
         // Handle Errors
+        console.log('Update pet error: ', err);
       });
   });
 
@@ -72,7 +76,13 @@ module.exports = (app) => {
         currency: 'usd',
         description: `Purchased ${pet.name}, ${pet.species}`,
         source: token,
-      }).then(() => {
+      }).then((chg) => {
+        const user = {
+          email: req.body.stripeEmail,
+          amount: chg.amount / 100,
+          petName: pet.name
+        };
+        mailer.sendMail(user, req, res);
         res.redirect(`/pets/${req.params.id}`);
       })
       .catch(err => {

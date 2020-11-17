@@ -11,13 +11,14 @@ mongoosePaginate.paginate.options = {
 
 const PetSchema = new Schema({
     name            : { type: String, required: true }
-  , species         : { type: String }
-  , birthday        : { type: Date }
+  , species         : { type: String, required: true }
+  , birthday        : { type: Date, required: true }
   , picUrl          : { type: String }
   , picUrlSq        : { type: String }
-  , favoriteFood    : { type: String }
-  , description     : { type: String }
+  , favoriteFood    : { type: String, required: true }
+  , description     : { type: String, minlength: 140, requried: true }
   , price           : { type: Number, required: true }
+  , avatarUrl          : { type: String, required: true }
 },
 {
   timestamps: true
